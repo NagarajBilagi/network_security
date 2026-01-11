@@ -2,3 +2,4 @@ network
 .env
 extra.ipynb
 Artifacts
+logs
