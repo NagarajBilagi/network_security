@@ -27,7 +27,7 @@ if __name__ == "__main__":
         logging.info('initiate data validation')
         data_validation_arifact = data_validation.initiate_data_validation()
         logging.info('data validation completed')
-        print(data_validation_arifact)
+        print('data_validation_arifact :',data_validation_arifact)
 
     except Exception as e:
         raise NetworkSecurityException(e, sys)
