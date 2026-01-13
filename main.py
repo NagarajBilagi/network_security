@@ -6,6 +6,9 @@ from network_security.entity.config_entity import TrainingPipelineConfig
 from network_security.components.data_validation import DataValidation
 from network_security.entity.config_entity import DataValidationConfig
 
+from network_security.components.data_transformation import DataTranformation
+from network_security.entity.config_entity import DataTransformationConfig
+
 from network_security.exception.exception import NetworkSecurityException
 from network_security.logging.logger import logging
 
@@ -28,6 +31,15 @@ if __name__ == "__main__":
         data_validation_arifact = data_validation.initiate_data_validation()
         logging.info('data validation completed')
         print('data_validation_arifact :',data_validation_arifact)
+
+        data_transformation_config = DataTransformationConfig(training_pipeline_config)
+        data_transformation = DataTranformation(data_validation_arifact, data_transformation_config=data_transformation_config)
+        logging.info("initiate data transformation")
+        data_tranformation_artifact = data_transformation.inintiate_data_transformation()
+        logging.info("data transformation completed")
+        print(data_tranformation_artifact)
+
+
 
     except Exception as e:
         raise NetworkSecurityException(e, sys)
