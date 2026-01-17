@@ -18,11 +18,23 @@ from sklearn.metrics import r2_score
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import (AdaBoostClassifier, GradientBoostingClassifier, RandomForestClassifier)
+import mlflow
 
 class ModelTrainer:
     def __init__(self, model_trainer_config :ModelTrainerConfig, data_transformation_artifact: DataTransformationArtifact):
         self.model_trainer_config = model_trainer_config
         self.data_transformation_artifact = data_transformation_artifact
+
+    def track_mlflow(self, best_model, classification_train_metric):
+        with mlflow.start_run():
+            f1_score = classification_train_metric.f1_score
+            precision_score =classification_train_metric.precision_score
+            recall_score = classification_train_metric.recall_score
+
+            mlflow.log_metric("f1_score", f1_score)
+            mlflow.log_metric("precision_score", precision_score)
+            mlflow.log_metric("recall_score", recall_score)
+            mlflow.sklearn.log_model(best_model, "model")
 
 
     def train_model(self, x_train, y_train, x_test, y_test):
@@ -69,6 +81,10 @@ class ModelTrainer:
             classification_train_metric= get_classification_score(y_train_pred, y_train)
 
             # track mlfow
+            self.track_mlflow(best_model, classification_train_metric)
+
+
+
             y_test_pred =best_model.predict(x_test)
             classification_test_metric = get_classification_score(y_test_pred, y_test)
 
