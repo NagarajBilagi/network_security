@@ -16,6 +16,8 @@ from network_security.utils.main_utils.utils import load_object, save_object, lo
 from network_security.constant.training_pipeline import (DATA_INGESTION_COLLECTION_NAME, 
                                                          DATA_INGESTION_DATABASE_NAME)
 
+from network_security.utils.ml_utils.model.estimator import NewtworkModel
+
 
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, File, UploadFile, Request
@@ -36,6 +38,9 @@ collection = database[DATA_INGESTION_COLLECTION_NAME]
 app = FastAPI()
 origins = ["*"]
 
+from fastapi.templating import Jinja2Templates
+templates= Jinja2Templates(directory= "./templates")
+
 app.add_middleware(CORSMiddleware, 
                    allow_origins= origins, 
                    allow_credentials = True,
@@ -55,6 +60,24 @@ async def train_route():
     except Exception as e:
         raise NetworkSecurityException(e,sys)
 
+@app.post("/predict")
+async def predict_route(request: Request, file: UploadFile = File(...)):
+    try:
+        df = pd.read_csv(file.file)
+        preprocessor = load_object("final_model/preprocessor.pkl")
+        model = load_object("final_model/model.pkl")
+        network_model =NewtworkModel(preprocessor= preprocessor, model= model)
+        print(df.iloc[0])
+        y_pred =network_model.predict(df)
+        print('y_pred :',y_pred)
+        df['predicted_column'] = y_pred
+        print(df["predicted_column"])
+        df.to_csv("prediction_output/output.csv")
+        table_html = df.to_html(classes= "table table-striped")
+        return templates.TemplateResponse("table.html", {"request": request, "table": table_html})
+
+    except Exception as e:
+        raise NetworkSecurityException(e,sys)
 
 if __name__ == "__main__":
     app_run(app= app, host= "localhost", port= 8000)
