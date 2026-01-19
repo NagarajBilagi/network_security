@@ -20,6 +20,10 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import (AdaBoostClassifier, GradientBoostingClassifier, RandomForestClassifier)
 import mlflow
 
+import dagshub
+dagshub.init(repo_owner='nagaraj', repo_name='network_security', mlflow=True)
+
+
 class ModelTrainer:
     def __init__(self, model_trainer_config :ModelTrainerConfig, data_transformation_artifact: DataTransformationArtifact):
         self.model_trainer_config = model_trainer_config
@@ -95,6 +99,8 @@ class ModelTrainer:
 
             network_model= NewtworkModel(preprocessor,model=best_model)
             save_object(self.model_trainer_config.trained_model_file_path, obj= NewtworkModel)
+
+            save_object("final_model/model.pkl", best_model)
 
             # model trainer artifact
             model_trainer_artifact =ModelTrainerArtifact(trained_model_file_path= self.model_trainer_config.trained_model_file_path,
