@@ -1,0 +1,25 @@
+name: workflow
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+
+
+jobs:
+  integration:
+    name: continous integration
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout Code
+        uses: actions/checkout@v3
+
+      - name: Lint code 
+        run: echo "Linting repository"
+
+      - name: Run unit tests
+        run: echo "Running unit tests"
+
+    
