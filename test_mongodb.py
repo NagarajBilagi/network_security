@@ -4,7 +4,6 @@ import os
 
 load_dotenv()
 
-#uri = "mongodb+srv://nagarajbilagi_db_user:Nagu1234@cluster0.rok4nzi.mongodb.net/?appName=Cluster0"
 uri = os.getenv('MONGO_DB_URL')
 # Create a new client and connect to the server
 client = MongoClient(uri)
