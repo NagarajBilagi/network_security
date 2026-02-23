@@ -19,18 +19,18 @@ The system includes:
 ## 🏗️ System Architecture
 ```
 
-├── src/
+├── network_security/
 │   ├── components/
 │   │   ├── data_ingestion.py
 │   │   ├── data_validation.py
 │   │   ├── data_transformation.py
-│   │   ├── model_trainer.py
-│   │   └── model_evaluation.py
+│   │   └── model_trainer.py
+│   │    
 │   ├── pipeline/
 │   └── utils/
 ├── app.py
 ├── Dockerfile
-├── .github/workflows/
+├── .github/workflows/main.yml
 ├── requirements.txt
 └── README.md
 ```
