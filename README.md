@@ -5,7 +5,7 @@
 
 This project showcases an end-to-end Machine Learning pipeline for phishing website detection.
 
-It implements a modular ML architecture and applies practical MLOps practices including automated CI/CD workflows, Docker containerization, and deployment on AWS cloud infrastructure.
+It implements a modular ML architecture and applies MLOps practices including automated CI/CD workflows, Docker containerization, and deployment on AWS cloud infrastructure.
 
 The system includes:
 - Structured ML pipeline architecture
